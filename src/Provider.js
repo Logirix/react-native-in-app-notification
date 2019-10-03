@@ -9,11 +9,18 @@ class Provider extends React.PureComponent {
     super(props);
 
     this.showNotification = this.showNotification.bind(this);
+    this.closeNotification = this.showNotification.bind(this)
   }
 
   showNotification(notificationOptions) {
     if (this.notification) {
       this.notification.show(notificationOptions);
+    }
+  }
+  
+  closeNotification(notificationOptions) {
+    if (this.notification) {
+      this.notification.closeNotification(notificationOptions);
     }
   }
 
