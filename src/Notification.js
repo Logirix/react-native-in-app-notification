@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
 class Notification extends Component {
   constructor() {
     super();
-
+    console.tron.logImportant('constructor');
     this.heightOffset = isIphoneX() ? getStatusBarHeight() : 0;
 
     this.show = this.show.bind(this);
@@ -56,17 +56,17 @@ class Notification extends Component {
         },
         () => this.showNotification(() => {
           this.currentNotificationInterval = setTimeout(() => {
-            this.setState(
-              {
-                isOpen: false,
-                title: '',
-                message: '',
-                onPress: null,
-                icon: null,
-                vibrate: true,
-              },
-              this.closeNotification,
-            );
+            // this.setState(
+            //   {
+            //     isOpen: false,
+            //     title: '',
+            //     message: '',
+            //     onPress: null,
+            //     icon: null,
+            //     vibrate: true,
+            //   },
+              this.closeNotification()
+            // );
           }, closeInterval);
         }),
       );
@@ -89,13 +89,34 @@ class Notification extends Component {
   }
 
   closeNotification(done) {
-    Animated.timing(this.state.animatedValue, {
-      toValue: 0,
-      duration: this.props.openCloseDuration,
-    }).start(done);
+    this.setState({
+      isOpen: false,
+      title: '',
+      message: '',
+      onPress: null,
+      icon: null,
+      vibrate: true,
+    }, () => {
+      const onEnd = () => {
+        this.setState({
+          isOpen: false,
+          title: '',
+          message: '',
+          onPress: null,
+          icon: null,
+          vibrate: true,
+        })
+        // if (done) done()
+      }
+       Animated.timing(this.state.animatedValue, {
+        toValue: 0,
+        duration: this.props.openCloseDuration,
+      }).start(onEnd);
+    })
   }
 
   render() {
+    console.tron.logImportant(this.state);
     const {
       height: baseHeight,
       topOffset,
