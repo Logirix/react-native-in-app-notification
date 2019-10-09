@@ -18,9 +18,9 @@ class Provider extends React.PureComponent {
     }
   }
   
-  closeNotification(notificationOptions) {
+  closeNotification() {
     if (this.notification) {
-      this.notification.closeNotification(notificationOptions);
+      this.notification.closeNotification();
     }
   }
 
