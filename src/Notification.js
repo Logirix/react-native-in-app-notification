@@ -89,6 +89,13 @@ class Notification extends Component {
   }
 
   closeNotification(done) {
+    if (!this.state.isOpen) {
+      Animated.timing(this.state.animatedValue, {
+        toValue: 0,
+        duration: this.props.openCloseDuration,
+      }).start(() => {if (done) done()});
+      return
+      }
     this.setState({
       isOpen: false,
       title: '',
@@ -106,7 +113,7 @@ class Notification extends Component {
           icon: null,
           vibrate: true,
         })
-        // if (done) done()
+        if (done) done()
       }
        Animated.timing(this.state.animatedValue, {
         toValue: 0,
@@ -128,7 +135,7 @@ class Notification extends Component {
     const { animatedValue, title, message, onPress, isOpen, icon, vibrate } = this.state;
 
     const height = baseHeight + this.heightOffset;
-
+    if (!isOpen || !title) return null
     return (
       <Animated.View
         style={[
